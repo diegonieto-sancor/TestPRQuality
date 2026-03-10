@@ -1,0 +1,47 @@
+name: PR Quality Gate
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # 🚫 Bloquear console.log
+      - name: Fail if console.log exists
+        run: |
+          if grep -r --include="*.ts" "console.log" ./src; then
+            echo "console.log found. Remove debug logs."
+            exit 1
+          fi
+
+      # 🚫 Bloquear debugger
+      - name: Fail if debugger exists
+        run: |
+          if grep -r --include="*.ts" "debugger" ./src; then
+            echo "debugger found. Remove it."
+            exit 1
+          fi
+
+      # 🚫 Bloquear estilos inline en HTML
+      - name: Fail if inline styles exist
+        run: |
+          if grep -r --include="*.html" 'style="' ./src; then
+            echo "Inline styles found in HTML."
+            exit 1
+          fi
+
+      # 🚫 Bloquear comentarios HTML
+      - name: Fail if HTML comments exist
+        run: |
+          if grep -r --include="*.html" "<!--" ./src; then
+            echo "HTML comments found."
+            exit 1
+          fi

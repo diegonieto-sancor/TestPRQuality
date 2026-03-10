@@ -138,5 +138,7 @@ export class LoginComponent {
                 this.loading = false;
             }
         });
+
+        console.log("test");
     }
 }
