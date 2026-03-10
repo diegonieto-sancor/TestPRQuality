@@ -1,0 +1,59 @@
+<div class="login-container">
+    <div class="login-card">
+        <h2>🔐 Selecciona un Perfil de Usuario</h2>
+        <p class="subtitle">Elige un perfil para ver los permisos de menú correspondientes</p>
+
+        <div class="user-profiles">
+            <div *ngFor="let user of predefinedUsers" class="user-card" [class.selected]="selectedUser === user"
+                (click)="selectUser(user)">
+
+                <h3>
+                    {{ user.name }}
+                    <span *ngIf="loading && selectedUser === user"
+                        style="font-size: 0.8em; color: #667eea; margin-left: 10px;">
+                        ⌛ Cargando...
+                    </span>
+                </h3>
+
+                <div class="user-details">
+                    <div class="detail-row">
+                        <span class="label">Plan:</span>
+                        <span class="value">{{ user.plan }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Titular:</span>
+                        <span class="value">{{ user.esTitular ? 'Sí' : 'No' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Sexo:</span>
+                        <span class="value">{{ user.sexo === 'F' ? 'Femenino' : 'Masculino' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Edad:</span>
+                        <span class="value">{{ user.edad }} años</span>
+                    </div>
+                    <div class="detail-row" *ngIf="user.discapacidad === 'S'">
+                        <span class="label">Discapacidad:</span>
+                        <span class="value badge">Sí</span>
+                    </div>
+                    <div class="detail-row" *ngIf="user.campaniaVacunacion">
+                        <span class="label">Campaña Vacunación:</span>
+                        <span class="value badge">Activa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+            ⚠️ {{ error }}
+        </div>
+
+
+
+        <div class="info-box">
+            <p><strong>ℹ️ Nota:</strong> Asegúrate de que el backend esté ejecutándose en
+                <code>{{ApiConfig.baseUrl}}</code>
+            </p>
+        </div>
+    </div>
+</div>

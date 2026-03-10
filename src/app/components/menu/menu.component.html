@@ -1,0 +1,56 @@
+<div class="menu-container">
+    <div class="menu-header">
+        <div class="header-content">
+            <h2>📋 Menú de Asociados</h2>
+            <div class="permissions-info">
+                <span class="badge">{{ getVisibleItemsCount() }} opciones disponibles</span>
+                <button class="btn-check-perms" (click)="navigateToPermissions()">🔍 Consultar Condiciones</button>
+                <button class="logout-btn" (click)="logout()">🚪 Cambiar Usuario</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="permissions-summary">
+        <h3>✅ Permisos Otorgados</h3>
+        <div class="permissions-list">
+            <span *ngFor="let perm of permissionsArray" class="permission-badge">{{ perm }}</span>
+        </div>
+    </div>
+
+    <div class="menu-content">
+        <div *ngFor="let category of categories" class="category-section">
+            <h3 class="category-title">{{ category }}</h3>
+
+            <div class="menu-grid">
+                <ng-container *ngFor="let item of getItemsByCategory(category)">
+                    <div class="menu-item" *appHasPermission="item.permission">
+                        <div class="item-icon">{{ item.icon }}</div>
+                        <div class="item-content">
+                            <h4>{{ item.title }}</h4>
+                            <p>{{ item.description }}</p>
+                        </div>
+                        <div class="item-arrow">→</div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Mensaje si no hay items visibles en la categoría -->
+            <div *ngIf="!hasVisibleItemsInCategory(category)" class="no-items-message">
+                No tienes permisos para ver opciones en esta categoría
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>ℹ️ Información del Sistema</h3>
+        <p>Este menú se genera dinámicamente basado en las reglas de negocio evaluadas por Easy Rules.</p>
+        <p>Las opciones visibles dependen de:</p>
+        <ul>
+            <li>Tu plan de salud</li>
+            <li>Si eres titular o adherente</li>
+            <li>Composición del grupo familiar (sexo, edad, discapacidad)</li>
+            <li>Campañas activas</li>
+            <li>Servicios contratados</li>
+        </ul>
+    </div>
+</div>
